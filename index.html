@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghella's Art | Online Commission & Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Raleway:wght@300;400;600&family=Josefin+Sans:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Raleway',sans-serif;overflow-x:hidden;color:#333;
+background: url(/image/ca6d9ff41e832dedf75c613444e9a5e4.jpg) no-repeat center center fixed; background-size:cover;}
+
+/* ===== HEADER ===== */
+header{text-align:center;padding:60px 20px;position:relative;z-index:5;}
+header .logo{font-family:'Pacifico',cursive;font-size:3.5rem;color:#4a2fbf;letter-spacing:3px;}
+header p{font-size:1rem;color:#555;margin-top:5px;}
+
+/* ===== NAVIGATION ===== */
+nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);padding:12px;text-align:center;position:sticky;top:0;z-index:10;box-shadow:0 4px 15px rgba(0,0,0,0.08);}
+nav a{margin:0 18px;text-decoration:none;color:#4a2fbf;font-weight:500;font-family:'Josefin Sans';position:relative;}
+nav a::after{content:"";position:absolute;width:0;height:2px;background:#b38bff;left:0;bottom:-5px;transition:0.4s;}
+nav a:hover::after{width:100%;}
+
+/* ===== SECTIONS ===== */
+section{padding:80px 10%;opacity:1;transition:opacity 1s ease, transform 1s ease;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:30px;color:#4a2fbf;border-bottom:2px solid #b38bff;display:inline-block;padding-bottom:5px;}
+
+/* ===== GALLERY ===== */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;margin-bottom:50px;}
+.art-card{text-align:center;position:relative;overflow:hidden;border-radius:20px;background:rgba(255,255,255,0.85);padding:15px;box-shadow:0 10px 25px rgba(0,0,0,0.1);transition:transform 0.3s, box-shadow 0.3s;cursor:pointer;}
+.art-card:hover{transform:translateY(-5px);box-shadow:0 15px 30px rgba(0,0,0,0.15);}
+.art-card img{width:100%;border-radius:15px;transition:transform 0.3s;}
+.art-card img:hover{transform:scale(1.05);}
+.art-card h4{margin-top:10px;font-family:'Cormorant Garamond',serif;color:#4a2fbf;font-weight:600;}
+.art-card p{margin-bottom:5px;color:#555;font-family:'Raleway';font-weight:500;}
+
+/* ===== BUTTONS ===== */
+.buy-btn,.login-btn,.cart-btn{display:inline-block;margin-top:10px;padding:10px 25px;background:linear-gradient(135deg,#b38bff,#ff9acb);color:#fff;border:none;border-radius:30px;font-family:'Josefin Sans';cursor:pointer;font-weight:600;transition:0.3s;box-shadow:0 8px 20px rgba(179,139,255,0.3);}
+.buy-btn:hover,.login-btn:hover,.cart-btn:hover{transform:scale(1.05);box-shadow:0 12px 25px rgba(179,139,255,0.5);}
+
+/* ===== MODAL ===== */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;z-index:50;}
+.modal-content{background:#fff;padding:30px;border-radius:25px;width:90%;max-width:400px;animation:fadeBlur 0.8s ease;position:relative;}
+.modal-content h2{text-align:center;margin-bottom:20px;color:#4a2fbf;}
+.modal-content input{width:100%;padding:12px;margin-bottom:15px;border-radius:12px;border:1px solid #ccc;}
+.close-btn{position:absolute;top:10px;right:15px;font-size:1.5rem;cursor:pointer;color:#b38bff;}
+
+/* ===== LIGHTBOX ===== */
+#lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:100;flex-direction:column;}
+#lightbox img{max-width:90%;max-height:70%;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.5);}
+#lightbox-info{color:#fff;margin-top:15px;font-size:1.1rem;text-align:center;}
+.lightbox-nav{position:absolute;top:50%;font-size:3rem;color:#fff;cursor:pointer;user-select:none;padding:10px;}
+#prev{left:15px;} #next{right:15px;}
+.lightbox-close{position:absolute;top:10px;right:20px;font-size:2rem;color:#b38bff;cursor:pointer;}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:30px;background:rgba(255,255,255,0.8);font-size:0.85rem;opacity:1;}
+
+/* ===== CANVAS ===== */
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeBlur{from{opacity:0;filter:blur(10px);}to{opacity:1;filter:blur(0);}}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<header>
+  <div class="logo">Ghella's <span>Art</span></div>
+  <p>Digital & Traditional Art |  Free For Commission</p>
+  <p>Contact Information|
+  
+    Artist😺: Ghermella Casao| 
+    
+    Email✉️: casaoghermella@gmail.com |
+    
+    Contact📞: 09945007687</p>
+  <button class="login-btn" onclick="openLogin()">Login / Account</button>
+  <div id="userDisplay"></div>
+</header>
+
+<nav>
+  <a href="#digital-section">Digital Art</a>
+  <a href="#traditional-section">Traditional Art</a>
+  <a href="#profile-section">Profile</a>
+  <a href="#" onclick="openCart()">Cart</a>
+</nav>
+
+<section id="digital-section">
+  <h2 class="section-title">Digital Art Collection</h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<section id="traditional-section">
+  <h2 class="section-title">Traditional Art Collection</h2>
+  <div class="gallery" id="gallery2"></div>
+</section>
+
+<section id="profile-section">
+  <h2 class="section-title">Profile & Order History will show here</h2>
+  <div id="profileContent" style="text-align:center;"></div>
+</section>
+
+<footer>
+  <p>© 2026 Ghella's Art. All artworks are protected. Unauthorized use, reproduction, or distribution is strictly prohibited.</p>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeLogin()">&times;</span>
+    <h2>Login / Register</h2>
+    <input type="text" id="loginName" placeholder="Name (for registration)">
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button class="cart-btn" onclick="registerUser()">Register</button>
+    <button class="cart-btn" onclick="loginUser()">Login</button>
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeCart()">&times;</span>
+    <h2 style="text-align:center;">Shopping Cart</h2>
+    <div id="cartItems"></div>
+    <div style="margin-top:15px;font-weight:bold;" id="cartTotal"></div>
+    <button class="cart-btn" onclick="checkoutCart()">Checkout</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+  <img id="lightbox-img">
+  <div id="lightbox-info"></div>
+  <span class="lightbox-nav" id="prev" onclick="prevArt()">&#10094;</span>
+  <span class="lightbox-nav" id="next" onclick="nextArt()">&#10095;</span>
+</div>
+
+<script>
+// ===== ARTWORK DATA =====
+const artworks=[
+{src:'/image/da0d0600684d25c98c8386c6d423fb00.jpg',name:'Digital Head',name:'The wondering eyes',year:'2026',price:700,type:'digital',style:'Head'},
+{src:'/image/f4f30cffb728aa18e9920bdcd277ecb4.jpg',name:'Digital Full Body',name:'Amara and her glasses',year:'2026',price:900,type:'digital',style:'Full Body'},
+{src:'/image/58d5a363515fa2180d19d586079f4d8e.jpg',name:'Strawberry Yummy😺',year:'2026',price:450,type:'digital',style:'Simple Art'},
+{src:'/image/IMG_20241027_170352_194.jpg',name:'Traditional Head(couple)',year:'2026',price:1200,type:'traditional',style:'Head'},
+{src:'/image/IMG_20241001_115049_800.jpg',name:'Traditional Full Body',year:'2026',price:900,type:'traditional',style:'Full Body'},
+{src:'/image/IMG_20240703_164020_356.jpg',name:'Traditional Head',year:'2026',price:700,type:'traditional',style:'Head'}
+];
+
+// ===== RENDER GALLERIES =====
+function renderGallery(){
+  const gallery1=document.getElementById('gallery');
+  const gallery2=document.getElementById('gallery2');
+  artworks.forEach((art,i)=>{
+    const card=document.createElement('div'); card.classList.add('art-card');
+    card.innerHTML=`<img src="${art.src}" alt="${art.name}"><h4>${art.name}</h4>
+    <p>${art.year} • ${art.style} • ₱${art.price}</p>
+    <button class="buy-btn" onclick="addToCart(${i});event.stopPropagation()">Add to Cart</button>`;
+    card.onclick=()=>openLightbox(i);
+    if(art.type==='digital') gallery1.appendChild(card);
+    else gallery2.appendChild(card);
+  });
+}
+renderGallery();
+
+// ===== LOGIN / REGISTER =====
+const admin={name:"Ghermella Casao",email:"casaoghermella@gmail.com",password:"Art2026"};
+
+function registerUser(){
+  const name=document.getElementById('loginName').value.trim();
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value.trim();
+  if(!name||!email||!pass){alert('Fill all fields!');return;}
+  let users=JSON.parse(localStorage.getItem('users'))||[];
+  if(users.some(u=>u.email===email)){alert('Email already registered!');return;}
+  users.push({name,email,password:pass}); localStorage.setItem('users',JSON.stringify(users));
+  alert('Registration successful!');
+}
+
+function loginUser(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value.trim();
+  if(email===admin.email && pass===admin.password){ alert('Admin login successful!'); closeLogin(); return;}
+  let users=JSON.parse(localStorage.getItem('users'))||[];
+  const user=users.find(u=>u.email===email && u.password===pass);
+  if(user){ localStorage.setItem('loggedInUser',JSON.stringify(user)); alert('Login successful!'); updateUserDisplay(user.name); displayProfile(); closeLogin();}
+  else alert('Invalid credentials!');
+}
+
+function logoutUser(){localStorage.removeItem('loggedInUser'); updateUserDisplay(''); displayProfile(); alert('Logged out.');}
+function updateUserDisplay(name){document.getElementById('userDisplay').innerHTML=name?`Welcome, ${name} <button class="login-btn" onclick="logoutUser()">Logout</button>`:'';}
+function openLogin(){document.getElementById('loginModal').style.display='flex';}
+function closeLogin(){document.getElementById('loginModal').style.display='none';}
+
+// ===== CART =====
+let cart=[];
+function addToCart(i){
+  const user=JSON.parse(localStorage.getItem('loggedInUser'));
+  if(!user){alert('Please login!'); openLogin(); return;}
+  const item=artworks[i]; const found=cart.find(c=>c.name===item.name);
+  if(found) found.qty++; else cart.push({...item,qty:1});
+  alert(`${item.name} added!`);
+}
+function openCart(){document.getElementById('cartModal').style.display='flex'; updateCart();}
+function closeCart(){document.getElementById('cartModal').style.display='none';}
+function updateCart(){
+  const itemsDiv=document.getElementById('cartItems'); const totalDiv=document.getElementById('cartTotal'); itemsDiv.innerHTML=''; let total=0;
+  cart.forEach((c,i)=>{total+=c.price*c.qty; const div=document.createElement('div'); div.style.display='flex'; div.style.justifyContent='space-between'; div.style.marginBottom='10px';
+    div.innerHTML=`<span>${c.name} x ${c.qty}</span><span>₱${c.price*c.qty}</span>
+    <button onclick="removeFromCart(${i})" style="background:#ff7f7f;border:none;border-radius:15px;padding:2px 8px;color:#fff;cursor:pointer;">Remove</button>`;
+    itemsDiv.appendChild(div);
+  }); totalDiv.innerText='Total: ₱'+total;
+}
+function removeFromCart(i){cart.splice(i,1); updateCart();}
+function checkoutCart(){
+  const user=JSON.parse(localStorage.getItem('loggedInUser'));
+  if(!user){alert('Please login!'); openLogin(); return;}
+  if(cart.length===0){alert('Cart empty!'); return;}
+  let orders=JSON.parse(localStorage.getItem('orders'))||{};
+  if(!orders[user.email]) orders[user.email]=[];
+  orders[user.email].push(...cart);
+  localStorage.setItem('orders',JSON.stringify(orders));
+  alert('Order placed successfully!');
+  cart=[]; closeCart(); displayProfile();
+}
+
+// ===== PROFILE =====
+function displayProfile(){
+  const user=JSON.parse(localStorage.getItem('loggedInUser'));
+  const profileDiv=document.getElementById('profileContent');
+  if(!user){ profileDiv.innerHTML='<p>Please login to view profile & orders.</p>'; return;}
+  profileDiv.innerHTML=`<p><strong>Name:</strong> ${user.name}</p><p><strong>Email:</strong> ${user.email}</p><h3>Order History:</h3>`;
+  const orders=JSON.parse(localStorage.getItem('orders'))||{};
+  const userOrders=orders[user.email]||[];
+  if(userOrders.length===0) profileDiv.innerHTML+='<p>No orders yet.</p>';
+  else userOrders.forEach(o=>profileDiv.innerHTML+=`<p>${o.name} • ${o.year} • ${o.style} • ₱${o.price} x ${o.qty}</p>`);
+}
+
+// ===== LIGHTBOX =====
+let currentArt=0;
+function openLightbox(i){currentArt=i; document.getElementById('lightbox').style.display='flex'; document.getElementById('lightbox-img').src=artworks[i].src; document.getElementById('lightbox-info').innerText=`${artworks[i].name} • ${artworks[i].year} • ${artworks[i].style} • ₱${artworks[i].price}`;}
+function closeLightbox(){document.getElementById('lightbox').style.display='none';}
+function nextArt(){currentArt=(currentArt+1)%artworks.length; openLightbox(currentArt);}
+function prevArt(){currentArt=(currentArt-1+artworks.length)%artworks.length; openLightbox(currentArt);}
+
+// ===== PAINT STROKES BACKGROUND =====
+const canvas=document.getElementById('particle-canvas'); const ctx=canvas.getContext('2d'); canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth; canvas.height=window.innerHeight; initStrokes();});
+class PaintStroke{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.len=Math.random()*80+40;this.speedX=Math.random()*0.3-0.15;this.speedY=Math.random()*0.3-0.15;this.alpha=Math.random()*0.4+0.1;this.width=Math.random()*4+1;this.color=`rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*200)},${Math.floor(Math.random()*255)},${this.alpha})`;}
+update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;}
+draw(){ctx.beginPath();ctx.strokeStyle=this.color;ctx.lineWidth=this.width;ctx.moveTo(this.x,this.y);ctx.lineTo(this.x+this.len*this.speedX*5,this.y+this.len*this.speedY*5);ctx.stroke();}}
+let strokes=[];
+function initStrokes(){strokes=[];for(let i=0;i<50;i++){strokes.push(new PaintStroke());}}
+initStrokes();
+function animateStrokes(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    strokes.forEach(s=>{s.update(); s.draw();});
+    requestAnimationFrame(animateStrokes);
+}
+animateStrokes();
+</script>
+
+</body>
+</html>
